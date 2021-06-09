@@ -1,1 +1,12 @@
-#
+#一般面试不能修改节点值，只能改变指向。思路通常不难，需想清思路，必要时结合画图，之后再编码
+#解法1：官方解答1，将中间需要反转的链表截取出来进行反转（即left到right的部分），保存left前一个节点pre和right后一个节点later，将pre指向反转后的头，反转后的尾指向later。
+        这里需要注意的是：1.感觉all链表题都要设置一个dummy_node 2.需将中间部分截出来，因此right的尾部要指向None
+        步骤：
+          先设置dummy_node，将其指向head
+          将pre设为dummy_node（这样寻找left前一个节点只需做left-1次循环，而若直接从head开始找需要left-2次循环，这也是导致我用自己方法无法成功原因）
+          得到left前一个节点：进行left-1次循环操作：pre = pre.next，此时pre为left前一个节点
+          得到left_node和right_node：left_node为pre.next，而right_node为left_node走right-left步（right_node=left_node，进行right-left次right_node = right_node.next）
+          先记录later=right_node.next，之后要切断连接，即right_node.next=None
+          
+          再用206题的函数进行反转（输入头即left_node）
+          函数结束后，right_node为头，left_node为尾部，进行连接即可
