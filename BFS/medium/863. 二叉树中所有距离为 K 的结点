@@ -1,3 +1,8 @@
 #自己想法：就是往上和往下两个方向，往下很简单，进行层序遍历，距离为k就是向下第k层的所有节点，而往上稍复杂（向上一层到其父节点，然后其父节点向下第k-1层的所有节点就是距离k的节点，其爷爷节
 #点向下第k-2层的所有节点就是距离k的节点，依次类推），需要进行深度优先搜索，维护一个节点表anc(列表)，保存其上层祖先节点(从根节点一直到其父节点)，若从一条路一直到叶节点没搜到就继续搜，若搜
 #到了就利用保存的节点表anc中的每个节点向下层序遍历
+
+#上面的想法没有问题，但做法有问题，因为用bfs层序遍历无法得知现在是第几层，所以即使得到祖先节点列表也要进行深度优先搜索，另外不是父节点向下第k-1层的所有节点就是距离k的节点，若目标在其左子
+#树，则只要搜右子树，反之  https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/ji-yu-targethe-targetfu-jie-dian-fen-qin-fkh0/
+
+#官方：https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/er-cha-shu-zhong-suo-you-ju-chi-wei-k-de-jie-dian-/
