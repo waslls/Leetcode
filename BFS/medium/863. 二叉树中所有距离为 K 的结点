@@ -1,8 +1,71 @@
 #自己想法：就是往上和往下两个方向，往下很简单，进行层序遍历，距离为k就是向下第k层的所有节点，而往上稍复杂（向上一层到其父节点，然后其父节点向下第k-1层的所有节点就是距离k的节点，其爷爷节
 #点向下第k-2层的所有节点就是距离k的节点，依次类推），需要进行深度优先搜索，维护一个节点表anc(列表)，保存其上层祖先节点(从根节点一直到其父节点)，若从一条路一直到叶节点没搜到就继续搜，若搜
 #到了就利用保存的节点表anc中的每个节点向下层序遍历
+  #上面的想法没有问题，但做法有问题，因为用bfs层序遍历无法得知现在是第几层，所以即使得到祖先节点列表也要进行深度优先搜索，另外不是父节点向下第k-1层的所有节点就是距离k的节点，若目标在其左子
+  #树，则只要搜右子树，反之。因此在记录祖先节点时还要记录目标在左还是右子树，感觉有点麻烦，代码没写完。
+  https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/ji-yu-targethe-targetfu-jie-dian-fen-qin-fkh0/
 
-#上面的想法没有问题，但做法有问题，因为用bfs层序遍历无法得知现在是第几层，所以即使得到祖先节点列表也要进行深度优先搜索，另外不是父节点向下第k-1层的所有节点就是距离k的节点，若目标在其左子
-#树，则只要搜右子树，反之  https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/ji-yu-targethe-targetfu-jie-dian-fen-qin-fkh0/
+#自己想法部分代码：
+class Solution:
+    def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        anc, flag, res = deque(), 0, []
+        def recur(p,pos=0):#保存其上层祖先节点,若找到目标就停止搜索
+            nonlocal flag
+            if not flag:
+                if not p:
+                    return
+                if p == target:
+                    flag = 1
+                    return
+                if not flag:
+                    anc.append(p)
+                    anc.append(pos)
+                recur(p.left,1)
+                recur(p.right,0)
+                if not flag:
+                    anc.pop()#检查p的左右子树是否有目标，若没有就删除p，返回上一层
+        recur(root)#得到anc
+        
+        
+#官方：建立子节点指向父节点的索引，然后对目标进行深度优先搜索即可。（这样就不用操作自己想法中往上搜索的步骤了）
+https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/er-cha-shu-zhong-suo-you-ju-chi-wei-k-de-jie-dian-/
+从官方代码可以看到广度优先其实是可以知道是第几层的，因为队列是用类似list实现的，可以用for循环一次把队列里所有节点取出然后生成所有子节点放进去
+#代码1：创建父节点索引后，进行DFS（creat是创建索引，下面的代码利用seen判断是否被搜到过，re存放结果，dist为当前节点的距离，初始化为0。然后在recur进行搜索，边界条件是若搜到空节点则返回
+，空节点为叶子的下一个或根结点的父亲节点。以及dist加到k时保存当前节点值并返回。搜索过程为分别判断左右和父亲节点是否被搜过，若没被搜过加入seen并使dist+1，然后对其递归搜索，注意搜索回来
+后要恢复dist状态即dist-1）
+def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+        def creat(p,par=None):
+            if not p:
+                return
+            p.par = par
+            creat(p.left,p)
+            creat(p.right,p)
+        creat(root)
 
-#官方：https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/solution/er-cha-shu-zhong-suo-you-ju-chi-wei-k-de-jie-dian-/
+        seen, re, dist = set(), [], 0
+        seen.add(target)
+        def recur(p):
+            nonlocal dist
+            if not p:
+                return
+            if dist == k:
+                re.append(p.val)
+                return
+            if p.left not in seen:
+                seen.add(p.left)
+                dist += 1
+                recur(p.left)
+                dist -= 1
+            if p.right not in seen:
+                seen.add(p.right)
+                dist += 1
+                recur(p.right)
+                dist -= 1
+            if p.par not in seen:
+                seen.add(p.par)
+                dist += 1
+                recur(p.par)
+                dist -= 1
+        recur(target)
+        return re
+#代码2：
