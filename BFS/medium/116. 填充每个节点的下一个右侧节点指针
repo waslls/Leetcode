@@ -1,0 +1,2 @@
+#直接BFS层序遍历即可，注意一个小trick，python中deque popleft出一个后，将它指向deque[0]就是指向下一个，另外输入为空还是要作为特殊情况判定。若root为空，相当于deque([[]])，还是会进while循
+#环，然后报错
