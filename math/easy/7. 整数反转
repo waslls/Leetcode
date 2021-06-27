@@ -7,4 +7,16 @@
           re = flag*int(x_f[::-1])
           return re if (re>=-2**31 and re<=2**31 - 1) else 0
           
-#从数学的角度思考：
+#从数学的角度思考：对输入取余得最小位数，取模得除去最小位数的数，由于最小位数是输出的最大位数，所以不断乘10+最小位数即可re = re*10 + a%10。
+def reverse(self, x: int) -> int:
+        re = 0
+        a = abs(x)
+        while(a):
+            re = re*10 + a%10
+            a = a//10
+        if x>0 and re<=2**31-1:
+            return re
+        if x<0 and re<=2**31:
+            return -re
+        else:
+            return 0
