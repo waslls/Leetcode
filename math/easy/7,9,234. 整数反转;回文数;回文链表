@@ -1,0 +1,68 @@
+#第七题
+    法1： #python很容易，转为字符串逆序后再转为整型，注意考虑符号和范围
+          #代码：def reverse(self, x: int) -> int:
+                    flag = 1
+                    if x<0:
+                        flag = -1
+                    x_f = str(abs(x))
+                    re = flag*int(x_f[::-1])
+                    return re if (re>=-2**31 and re<=2**31 - 1) else 0
+          
+     法2：#从数学的角度思考：对输入取余得最小位数，取模得除去最小位数的数，由于最小位数是输出的最大位数，所以不断乘10+最小位数即可re = re*10 + a%10。
+          def reverse(self, x: int) -> int:
+                  re = 0
+                  a = abs(x)
+                  while(a):
+                      re = re*10 + a%10
+                      a = a//10
+                  if x>0 and re<=2**31-1:
+                      return re
+                  if x<0 and re<=2**31:
+                      return -re
+                  else:
+                      return 0
+
+            
+            
+#第九题： 法1：类似第七题法1，
+          def isPalindrome(self, x: int) -> bool:
+                  if x<0:
+                      return False
+                  x_s = str(x)
+                  return x_s == x_s[::-1]
+          #法2：类似第七题法2：反转后比较即可
+          
+          
+#234：O(n)空间复杂度很简单 遍历链表节点存到列表中 用什么法1比较
+进阶：用O(1)复杂度，官方解答：https://leetcode-cn.com/problems/palindrome-linked-list/solution/hui-wen-lian-biao-by-leetcode-solution/
+    1找到前半部分链表的尾节点。 两种解法：1遍历链表计算节点数量，找到中间节点 2.快慢指针：奇数个则中间节点看做前半部分，偶数节点则正好
+                        def end_of_first_half(self, head):
+                            fast = head
+                            slow = head
+                            while fast.next is not None and fast.next.next is not None:
+                                fast = fast.next.next
+                                slow = slow.next
+                            return slow
+    2反转后半部分链表：很经典，解法应该背下来，主要是current节点
+                        def reverse_list(self, head):
+                            previous = None
+                            current = head
+                            while current is not None:
+                                next_node = current.next
+                                current.next = previous
+                                previous = current
+                                current = next_node
+                            return previous
+    3判断是否回文：找到第一部分头结点和反转后第二部分头结点一直往前走并比较即可，注意在奇数个节点时第二部分会少一个，因此终止条件是second_position是none
+                        result = True
+                            first_position = head
+                            second_position = second_half_start
+                            while result and second_position is not None:
+                                if first_position.val != second_position.val:
+                                    result = False
+                                first_position = first_position.next
+                                second_position = second_position.next
+                                
+    4恢复链表，返回结果：虽然不需要恢复也能通过测试用例，但是使用该函数的人通常不希望链表结构被更改。
+                        first_half_end.next = self.reverse_list(second_half_start)
+                            return result
