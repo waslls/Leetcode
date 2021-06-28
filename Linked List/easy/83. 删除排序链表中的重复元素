@@ -1,0 +1,32 @@
+#使用set存储已有元素，遍历链表。两种1：若遇到重复的，将此删去 2：使用不重复的节点值创建新链表
+#只写了第一种
+  #def deleteDuplicates(self, head: ListNode) -> ListNode:
+          #使用set存储已有元素，遍历链表。两种1：若遇到重复的，将此删去 2：使用不重复的创建新链表
+          if not head:
+              return head
+          t,dummy_node = set(),ListNode()
+          t.add(head.val)
+          dummy_node.next = head
+          pre,head = head,head.next
+          while head:
+              if head.val in t:
+                  pre.next = head.next
+                  head = head.next
+              else:
+                  t.add(head.val)
+                  pre = head
+                  head = head.next
+          return dummy_node.next
+#！！！！！！！！！！！！！！！！！！！！！！！后来发现是排好序的，即重复的元素在链表中出现的位置是连续的，所以不用set
+#直接从头cur开始，若cur和cur.next的值相等，则cur.next = cur.next.next，若不等则cur = cur.next：
+     #def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if not head:
+            return head
+
+        cur = head
+        while cur.next:
+            if cur.val == cur.next.val:
+                cur.next = cur.next.next
+            else:
+                cur = cur.next
+        return head
