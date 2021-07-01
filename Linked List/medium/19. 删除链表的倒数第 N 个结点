@@ -1,0 +1,14 @@
+#双指针 一个指针先走N步，然后两个指针一起走，后面的到表尾 前面的到倒数第N个，注意保持前面指针的前驱.其实只要保存前驱即可，后指针到尾后直接pre.next = pre.next.next。还要注意使用dummy_node
+#来返回最终结果，不然链表太短时易出错
+  def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+          #双指针 一个指针先走N步，然后两个指针一起走，后面的到表尾 前面的到倒数第N个，注意保持前面指针的前驱
+          a, dummy_node = head, ListNode()
+          dummy_node.next = head
+          pre = dummy_node
+          for i in range(n-1):
+              a = a.next
+          while(a.next):
+              a = a.next
+              pre = pre.next
+          pre.next = pre.next.next
+          return dummy_node.next
