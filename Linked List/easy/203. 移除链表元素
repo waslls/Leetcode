@@ -1,0 +1,1 @@
+#遍历结合pre.next=pre.next.next dummy_node,注意删节点和正常遍历时更新pre和head的操作有所不同。
