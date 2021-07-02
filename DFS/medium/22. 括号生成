@@ -1,0 +1,35 @@
+#解法1：暴力，递归生成即可，但要注意在判断的时候不能简单判断左右括号数量是否相等，而是在遍历过程中保证左比右多且最终左右相等。具体可设置变量count，遇到左+1，遇到右-1。若遍历过程中count<0
+#则出错，遍历完成若count！=0则出错。
+
+#解法2：回溯，（由于要保证在生成过程中右括号不能大于左括号数，且左右括号数量不能超过n）设置三个变量count,left,right，前者和解法1一致，不能<0，后两者分别表示左右括号的数量。回溯过程中若
+#添加左括号，count+=1，left+=1，（剪枝）若count>=0 and left<=n则进行回溯，实际count肯定>=0所以只要判断left<=n，添加左括号类似count-=1，right+=1，若满足count>=0 and right<=n则进行回溯。
+#最后要注意回溯出来要进行状态恢复（三个变量、去掉添加的括号)
+#
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        re = []
+        def backtrack(a,count,left,right):
+            if len(a) == 2*n:
+                re.append("".join(a))
+            else:
+                a.append("(")
+                count+=1
+                left+=1
+                if left<=n:#count>=0 and left<=n
+                    backtrack(a,count,left,right)
+                a.pop()
+                count-=1
+                left-=1
+
+                a.append(")")
+                count-=1
+                right+=1
+                if count>=0 and right<=n:
+                    backtrack(a,count,left,right)
+                a.pop()
+                count+=1
+                left-=1
+        backtrack([],0,0,0)
+        return re
+        
+ #解法3：官方解法2，类似带剪枝的回溯，但不易想到
