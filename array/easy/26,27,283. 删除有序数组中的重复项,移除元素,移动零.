@@ -10,4 +10,6 @@
 #27:还是双指针，fast的值若=val，跳过，不等于则赋给slow，fast每次循环都+=1，slow只有被赋值才+=1
 
 #283：还是双指针，fast的值若=0，跳过，不等于则赋给slow，fast每次循环都+=1，slow只有被赋值才+=1，最后把slow后面的都赋为0
-但空间O不好，官方的更好：也是双指针，使用左右指针交换的策略https://leetcode-cn.com/problems/move-zeroes/solution/yi-dong-ling-by-leetcode-solution/
+#但空间O不好，官方的更好：也是双指针，使用左右指针交换的策略https://leetcode-cn.com/problems/move-zeroes/solution/yi-dong-ling-by-leetcode-solution/在遇到0之前 左右指针同时往右移动，
+#遇到0时，右指针一直往右移动直到不是0，然后把左右指针值交换，即把左指针的0和右指针的数交换，然后把左指针后移一位再到第一个0，然后右指针现在指向0，接下来继续移到非0数，继续下去。即左指针
+#左边全是非0数，左指针指向第一个0，右指针左边和左指针右边全是0，右指针右边全是未处理的数。1,4,3,5,0(左指针),0,0,0,2(右指针),3,0,7,6
