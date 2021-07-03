@@ -14,3 +14,5 @@ class Solution:
             if flag == 0:#这种情况后面不可能有公共的
                 break
         return re
+        
+#其他：官方四种有时间可以看看 还有先排序然后比较头尾2020-06-15唐钰小宝https://leetcode-cn.com/problems/longest-common-prefix/solution/zui-chang-gong-gong-qian-zhui-by-leetcode-solution/
