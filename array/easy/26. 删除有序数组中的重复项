@@ -1,0 +1,6 @@
+#原地删除直接使用del num[i]即可，若使用for循环（判断num[i]==num[i+1]再删），由于删除后数组长度会减小，而for循环的i会不断向前，因此会漏判（自己试下就知道），借助题目标签使用双指针，单指针
+#也可以，若相等则删除，但指针不动，若不相等指针都向前移动一位，但是时间很慢9%
+
+#官方：我使用了del所以很慢，官方的双指针很巧妙，快指针遍历所有元素，若nums[fast]！=nums[fast-1]（nums[0]保持原状,从下标1开始删除重复元素）,则出现不同元素，填入到nums[slow]，然后slow+=1，
+#即slow表示到现在为止不同元素的个数，最后返回slow即可。
+#https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/solution/shan-chu-pai-xu-shu-zu-zhong-de-zhong-fu-tudo/有动图
