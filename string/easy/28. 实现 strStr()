@@ -1,0 +1,1 @@
+#双指针形成和needle长度一致的滑窗遍历haystack，判断滑窗截取的字符串是否和needle一致
