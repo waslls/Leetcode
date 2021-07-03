@@ -1,0 +1,16 @@
+#双90%  就是选第一个字符串的切片(从头切到尾：第一个循环),和所有字符串比较，若都相同，更新result，若有不同的，则更长的切片也不可能有公共的，因此直接返回result(不能在第一个break处返回re，
+#因为若输入为空可能进不去for循环)
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        re = ""
+        flag = 1
+        for i in range(len(strs[0])):#从首个字符串的前1个，2个...i个字符为基准和后面所有字符串的前i个比较
+            bench_mark = strs[0][:i+1]
+            for s in strs:
+                if len(s)<i or s[:i+1]!=bench_mark:#若当前字符串长度比基准小或和基准不同 置为flase
+                    flag = 0
+                    break
+            re = bench_mark if flag == 1 else re#若后面的和基准都相同 则结果更新为基准
+            if flag == 0:#这种情况后面不可能有公共的
+                break
+        return re
