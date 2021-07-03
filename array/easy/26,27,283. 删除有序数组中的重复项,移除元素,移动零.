@@ -8,3 +8,6 @@
 
 
 #27:还是双指针，fast的值若=val，跳过，不等于则赋给slow，fast每次循环都+=1，slow只有被赋值才+=1
+
+#283：还是双指针，fast的值若=0，跳过，不等于则赋给slow，fast每次循环都+=1，slow只有被赋值才+=1，最后把slow后面的都赋为0
+但空间O不好，官方的更好：也是双指针，使用左右指针交换的策略https://leetcode-cn.com/problems/move-zeroes/solution/yi-dong-ling-by-leetcode-solution/
