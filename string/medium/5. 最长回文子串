@@ -1,0 +1,27 @@
+#也是动态规划的题目，可参见官方动态规划解法https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/
+
+#自己：借助Michelle思路，回文子串分两种情况，一种中心对称(以一个字符i为中心向外扩散)一种轴对称(两个相连的一样的字符为中心向外扩散)
+def longestPalindrome(self, s) -> str:
+        #先以每个字符为中心找中心对称的 如aba 以b对中心
+        re,max_lenth = "",0
+        for i in range(len(s)):
+            a,b=i,i
+            while(a>=0 and b<len(s)):
+                if s[a] == s[b]:
+                    a-=1
+                    b+=1
+                else:break
+            re = s[a+1:b] if b-a+1>max_lenth else re
+            max_lenth = b-a+1 if b-a+1>max_lenth else max_lenth
+        #再找轴对称的如 ab|ba
+        for i in range(len(s)):
+            if i+1<len(s) and s[i] == s[i+1]:
+                a,b=i,i+1
+                while(a>=0 and b<len(s)):
+                    if s[a] == s[b]:
+                        a-=1
+                        b+=1
+                    else:break
+                re = s[a+1:b] if b-a+1>max_lenth else re
+                max_lenth = b-a+1 if b-a+1>max_lenth else max_lenth
+        return re
