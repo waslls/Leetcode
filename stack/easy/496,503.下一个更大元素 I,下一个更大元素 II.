@@ -1,0 +1,40 @@
+#496
+#自己的方法是找到nums2中nums1各个数的位置索引（哈希表存储），然后对nums1每个数从相应索引往后搜，但时间空间不太好
+
+#官方：单调栈，首先使用单调栈的方法将nums2中所有数后面第一个最大数存起来（哈希表），再根据nums1中数找即可
+#方法：https://leetcode-cn.com/problems/next-greater-element-i/solution/dan-diao-zhan-jie-jue-next-greater-number-yi-lei-w/  好评多的解析
+#倒着遍历nums2中所有数，每遍历一个数就得到此数后面第一个最大数。方法是总会把正在遍历的数压入栈（下一个遍历的数要和它比较），但压入栈之前要弹出S.top()比它小的数，直到栈为空或S.top()比它大时才压入，这样做导致S.top()
+#是这个栈中最小的数，下面的数依次增大。所以弹出步骤完成后，若栈为空说明后面没有比它大的数，返回-1，若不为空则S.top()就是第一个比它大的数。下面的while循环就是把栈中比它小的全弹出。弹出的
+#数对下一个遍历的数没有影响，因为若当前遍历的数比下一个遍历的数大，他就是第一个比他大的数，反之，刚才弹出的数比当前遍历的数都小，所以不可能比下一个遍历的数大
+
+vector<int> nextGreaterElement(vector<int>& nums) {
+    vector<int> ans(nums.size()); // 存放答案的数组
+    stack<int> s;
+    for (int i = nums.size() - 1; i >= 0; i--) { // 倒着往栈里放
+        while (!s.empty() && s.top() <= nums[i]) { // 判定个子高矮
+            s.pop(); // 矮个起开，反正也被挡着了。。。
+        }
+        ans[i] = s.empty() ? -1 : s.top(); // 这个元素身后的第一个高个
+        s.push(nums[i]); // 进队，接受之后的身高判定吧！
+    }
+    return ans;
+}
+
+#根据上述思想写的代码
+def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        qu,d,re = deque(),{},[]
+        for i in range(len(nums2)-1,-1,-1):
+            while(len(qu) and qu[-1]<nums2[i]):
+                qu.pop()
+            d[nums2[i]] = qu[-1] if len(qu) else -1#构建哈希表
+            qu.append(nums2[i]) 
+        for s in nums1:
+            re.append(d[s])
+        return re
+
+
+
+#503是中等难度 还是利用上述网址的解析：如何处理「循环数组」
+#带循环的顶多也就遍历两边，即nums2中间的数若右边比他大的数没有则还要看左边的（从左往右），因此可以想象成2个一样的nums2拼接在一起（从2倍nums2长度减一开始反向遍历），但是使用到的栈和数组
+#的长度还是len(nums2)，所以使用取余符号来模拟（当然也可以构造两倍长度的栈和数组），即nums[i%n](n为len(nums2))就相当于nums[n+i%n]，而且还能原地更新，不然构造两倍长度的对应位置个位置
+#还要取更大的那个，即要不两个位置都是-1，要不一个-1一个有效值，那就取有效值。
