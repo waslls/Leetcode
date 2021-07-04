@@ -1,0 +1,43 @@
+#字符串里面有一种解法（中心对称 轴对称），这里用dp，详细思路卸载goodnotes上了
+#初始代码：
+    def longestPalindrome(self, s) -> str:
+        l = len(s)
+        dp = [[0]*l for _ in range(l)]
+        #初始化
+        for i in range(l):
+            dp[i][i] = 1
+            if i+1<l and s[i]==s[i+1]:
+                dp[i][i+1] = 2
+        for i in range(2,l):
+            for j in range(l-i):
+                nx,ny = j,j+i
+                if dp[nx+1][ny-1]!=0 and s[nx] == s[ny]:
+                    dp[nx][ny] = dp[nx+1][ny-1] + 2
+        m = 0
+        for i in range(l):
+            for j in range(i,l):
+                if dp[i][j] > m:
+                    m = dp[i][j]
+                    re = s[i:j+1]
+        return re
+#而且如果用dp = [[0 for _ in range(l)] for _ in range(l)]超出时间限制 只能用上文中才通过，为进一步简化时间 在初始化和更新dp数组过程中保存最长回文子串(因为更新dp数组只更新未初始化的，
+#所以首先在初始化里更新回文子串最大长度m和回文子串起始和结束位置，返回时若发现m==0 说明无长度大于1的回文子串 返回某一个字符即可)
+    def longestPalindrome(self, s) -> str:
+        l = len(s)
+        dp = [[0]*l for _ in range(l)]
+        #初始化
+        m,re_i,re_j = 0,0,0
+        for i in range(l):
+            dp[i][i] = 1
+            if i+1<l and s[i]==s[i+1]:
+                m,re_i,re_j = 2,i,i+2
+                dp[i][i+1] = 2
+        #更新dp数组
+        for i in range(2,l):
+            for j in range(l-i):
+                nx,ny = j,j+i
+                if dp[nx+1][ny-1]!=0 and s[nx] == s[ny]:
+                    dp[nx][ny] = dp[nx+1][ny-1] + 2
+                    if dp[nx][ny]>m:
+                        m,re_i,re_j = dp[nx][ny],nx,ny+1
+        return s[re_i:re_j] if m !=0 else s[0]
