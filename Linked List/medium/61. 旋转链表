@@ -1,0 +1,15 @@
+#观察示例后发现，对于链表长>k的情况，只要把头部向前走链表长-k次然后返回头部(要把头部前一个节点和头部断掉)，对于链表长<k，头部向前走链表长-k%链表长次即可
+def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        if not head:
+            return head
+        a,l = head,1
+        while(a.next):
+            a = a.next
+            l+=1
+        a.next = head#a相当于pre
+        trans = l-k if l>=k else l-k%l
+        for i in range(trans):
+            a = a.next
+            head = head.next
+        a.next = None
+        return head
