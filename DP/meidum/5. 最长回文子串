@@ -1,4 +1,4 @@
-#字符串里面有一种解法（中心对称 轴对称），这里用dp，详细思路卸载goodnotes上了
+#字符串里面有一种解法（中心对称 轴对称），这里用dp，详细思路卸载goodnotes上了（力扣-》力扣）
 #初始代码：
     def longestPalindrome(self, s) -> str:
         l = len(s)
