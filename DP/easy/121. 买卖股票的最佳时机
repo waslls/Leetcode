@@ -1,0 +1,8 @@
+#https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/gu-piao-wen-ti-python3-c-by-z1m/讲得特别好
+#解法1：DP：dp[i] 表示前i天的最大利润dp[i]=max(dp[i−1],prices[i]−minprice)，minprice要随着遍历而不断更新
+
+#解法2：空间O为O(1)，DP为O(n)，由DP引申过来，不使用数组记录，用一个变量max_profit记录到第i天为止，最大收益是多少，最终返回max_profit即可。也就是把dp[i]=max(dp[i−1],prices[i]−minprice)中的
+#两个DP都换为max_profit，只不过一个是之前的一个是当前的。
+
+#注意！：此题还有个单调栈解法，虽然没必要，但可以加深理解单调栈。(感觉确实没用，还是别看下一行了)
+#遍历prices元素，若比栈顶大就加入，比栈顶小就弹出一直弹出栈顶并记录栈顶和栈低之差，为在此栈顶卖出能赚的最大收益，为什么要弹出呢，因为入栈比栈顶小，所以栈顶最高利润已确定，就没用了
